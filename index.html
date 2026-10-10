@@ -1,73 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Expense Tracker</title>
+  <title>Expense Tracker & Currency Exchange</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-    <section id="Expense-logging">
-  <div class="container">
-    <h2>Expense Tracker</h2>
-    <div id="balance">
-      <h3>Your Balance</h3>
-      <h1 id="balance-amount">$0.00</h1>
-    </div>
-    <div class="income-expense">
-      <div>
-        <h4>Income</h4>
-        <p id="income" class="money plus">+$0.00</p>
+  <main class="dashboard">
+    <!-- Left Card: Expense Tracker & Integrated Currency Converter -->
+    <section class="card" id="expense-logging">
+      <h2>Expense Tracker</h2>
+      
+      <div id="balance">
+        <h3>Your Balance</h3>
+        <h1 id="balance-amount">$0.00</h1>
       </div>
-      <div>
-        <h4>Expense</h4>
-        <p id="expense" class="money minus">-$0.00</p>
+
+      <div class="income-expense">
+        <div>
+          <h4>Income</h4>
+          <p id="income" class="money plus">+$0.00</p>
+        </div>
+        <div>
+          <h4>Expense</h4>
+          <p id="expense" class="money minus">-$0.00</p>
+        </div>
       </div>
-    </div>
-    <h3>Add Transaction</h3>
-    <form id="form">
-      <input type="text" id="text" placeholder="Enter description ..." required>
-      <input type="number" id="amount" placeholder="Enter amount ..." required>
-      <button type="submit">Add Transaction</button>
-    </form>
-    <h3>History</h3>
-    <ul id="list" class="list"></ul>
-  </div>
-</section>
-<section id="currency-converter">
-    <div class="wrapper">
-      <header>Currency Exchange</header>
-      <form action="#">
-        <div class="amount">
-          <p>Enter Amount</p>
-          <input type="text" value="1">
-        </div>
-        <div class="drop-list">
-          <div class="from">
-            <p>From</p>
-            <div class="select-box">
-              <img src="https://flagcdn.com/48x36/us.png" alt="flag">
-              <select> <!-- Options tag are inserted from JavaScript --> </select>
-            </div>
-          </div>
-          <div class="icon"><i class="fas fa-exchange-alt"></i></div>
-          <div class="to">
-            <p>To</p>
-            <div class="select-box">
-              <img src="https://flagcdn.com/48x36/af.png" alt="flag">
-              <select> <!-- Options tag are inserted from JavaScript --> </select>
-            </div>
-          </div>
-        </div>
-        <div class="exchange-rate">Getting exchange rate...</div>
-        <button>Get Exchange Rate</button>
+
+      <h3>Add Transaction</h3>
+      <form id="expense-form">
+        <input type="text" id="expense-text" placeholder="Enter description ..." required>
+        <input type="number" id="expense-amount" placeholder="Enter amount ..." required>
+        <button type="submit">Add Transaction</button>
       </form>
-      <div class="footer"><a class="footer-text" target="_blank" href="https://myskypower.net/">By My Sky Power</a></div>
-    </div>
-</section>
+
+      <!-- Embedded Currency Exchange Section -->
+      <div class="currency-converter-wrapper">
+        <h3>Currency Exchange</h3>
+        <form id="converter-form" action="#">
+          <div class="amount">
+            <p>Enter Amount</p>
+            <input type="number" id="converter-amount" value="1">
+          </div>
+          <div class="drop-list">
+            <div class="from">
+              <p>From</p>
+              <div class="select-box">
+                <img src="https://flagcdn.com/48x36/us.png" alt="flag">
+                <select id="from-currency"></select>
+              </div>
+            </div>
+            <div class="icon"><i class="fas fa-exchange-alt"></i></div>
+            <div class="to">
+              <p>To</p>
+              <div class="select-box">
+                <img src="https://flagcdn.com/48x36/af.png" alt="flag">
+                <select id="to-currency"></select>
+              </div>
+            </div>
+          </div>
+          <div class="exchange-rate">Getting exchange rate...</div>
+          <button type="submit">Get Exchange Rate</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Right Card: Dedicated History Panel -->
+    <section class="card" id="history-section">
+      <h2>Transaction History</h2>
+      <ul id="list" class="list"></ul>
+    </section>
+  </main>
+
+  <script src="country-list.js"></script>
   <script src="script.js"></script>
 </body>
-
 </html>

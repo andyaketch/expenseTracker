@@ -1,226 +1,209 @@
-body {
-  font-family: Arial, sans-serif;
-  background: #f4f6f8;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-}
-
-.container {
-  width: 350px;
-  background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
-}
-
-h2 {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.income-expense {
-  display: flex;
-  justify-content: space-between;
-  margin: 20px 0;
-  padding: 10px;
-  background: #f9f9f9;
-  border-radius: 6px;
-}
-
-.money.plus {
-  color: green;
-}
-
-.money.minus {
-  color: red;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-}
-
-form input,
-form button {
-  padding: 10px;
-  margin: 6px 0;
-  border-radius: 6px;
-  border: 1px solid #ddd;
-}
-
-form button {
-  width: 100%;
-}
-
-button {
-  background: #1a73e8;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-}
-
-.list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.list li {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px;
-  background: #fafafa;
-  border-left: 5px solid;
-  margin: 6px 0;
-  border-radius: 4px;
-}
-
-.list li.plus {
-  border-color: green;
-}
-
-.list li.minus {
-  border-color: red;
-}
-/* currency converter */
-/* Import Google Font - Poppins */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
+
 body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   min-height: 100vh;
-  padding: 0 10px;
-  background-image: linear-gradient(to right, #00b4db, #0083b0);
-}
-::selection {
-  color: #fff;
-  background: #675afe;
-}
-.wrapper {
-  width: 500px;
-  padding: 30px;
-  border-radius: 7px;
-  background: #fff;
-  box-shadow: 7px 7px 20px rgba(0, 0, 0, 0.05);
-}
-.wrapper header {
-  font-size: 28px;
-  font-weight: 500;
-  text-align: center;
-}
-.wrapper form {
-  margin: 40px 0 20px 0;
-}
-form :where(input, select, button) {
-  width: 100%;
-  outline: none;
-  border-radius: 5px;
-  border: none;
-}
-form p {
-  font-size: 18px;
-  margin-bottom: 5px;
-}
-form input {
-  height: 50px;
-  font-size: 17px;
-  padding: 0 15px;
-  border: 1px solid #999;
-}
-form input:focus {
-  padding: 0 14px;
-  border: 2px solid #0083b0;
-}
-form .drop-list {
   display: flex;
-  margin-top: 20px;
+  justify-content: center;
+  align-items: flex-start;
+  background-image: linear-gradient(to right, #00b4db, #0083b0);
+  padding: 40px 15px;
+}
+
+.dashboard {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+  align-items: flex-start;
+  max-width: 900px;
+  width: 100%;
+}
+
+.card {
+  width: 380px;
+  background: #fff;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.card h3 {
+  margin-top: 15px;
+  margin-bottom: 8px;
+  font-size: 17px;
+}
+
+/* Balance & Summary */
+#balance h1 {
+  font-size: 32px;
+}
+
+.income-expense {
+  display: flex;
+  justify-content: space-between;
+  margin: 15px 0;
+  padding: 12px 16px;
+  background: #f9f9f9;
+  border-radius: 6px;
+}
+
+.money.plus {
+  color: #2ecc71;
+}
+
+.money.minus {
+  color: #e74c3c;
+}
+
+/* Expense Form */
+#expense-form {
+  display: flex;
+  flex-direction: column;
+}
+
+#expense-form input,
+#expense-form button {
+  padding: 10px 12px;
+  margin: 6px 0;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  font-size: 15px;
+}
+
+#expense-form button {
+  background: #1a73e8;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+/* Embedded Currency Converter */
+.currency-converter-wrapper {
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+#converter-form p {
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+#converter-form input {
+  width: 100%;
+  height: 42px;
+  font-size: 15px;
+  padding: 0 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  outline: none;
+}
+
+#converter-form .drop-list {
+  display: flex;
+  margin-top: 15px;
   align-items: center;
   justify-content: space-between;
 }
+
 .drop-list .select-box {
   display: flex;
-  width: 175px;
-  height: 45px;
+  width: 125px;
+  height: 42px;
   align-items: center;
   border-radius: 5px;
   justify-content: center;
-  border: 1px solid #999;
+  border: 1px solid #ddd;
 }
+
 .select-box img {
   max-width: 21px;
 }
+
 .select-box select {
   width: auto;
-  font-size: 20px;
+  font-size: 15px;
   background: none;
-  margin: 0 -5px 0 5px;
+  border: none;
+  outline: none;
+  margin-left: 6px;
 }
-.select-box select::-webkit-scrollbar {
-  width: 8px;
-}
-.select-box select::-webkit-scrollbar-track {
-  background: #fff;
-}
-.select-box select::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 8px;
-  border-right: 2px solid #ffffff;
-}
+
 .drop-list .icon {
   cursor: pointer;
-  margin-top: 30px;
-  font-size: 22px;
+  margin-top: 20px;
+  font-size: 18px;
 }
-form .exchange-rate {
-  border: 1px dotted gray;
+
+#converter-form .exchange-rate {
+  border: 1px dotted #aaa;
   border-radius: 5px;
-  padding: 7px;
+  padding: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 19px;
-  margin: 20px 0 30px;
+  font-size: 14px;
+  margin: 15px 0;
 }
-form button {
-  height: 52px;
+
+#converter-form button {
+  width: 100%;
+  height: 42px;
   color: #fff;
-  font-size: 17px;
+  font-size: 15px;
   cursor: pointer;
   background: #00b4db;
-  transition: all 0.5s;
-}
-form button:hover {
-  background: #049bce;
+  border: none;
+  border-radius: 5px;
 }
 
-.footer .footer-text {
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 400;
-  color: #024359;
-  transition: all 0.5s;
-}
-.footer .footer-text:hover {
-  color: #035c7a;
+/* History Card */
+#history-section {
+  min-height: 250px;
 }
 
-@media (max-width: 700px) {
-  .wrapper {
-    width: 370px;
-  }
+.list {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+}
 
-  .drop-list .select-box {
-    width: 115px;
-    height: 45px;
-  }
+.list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  background: #fafafa;
+  border-left: 5px solid;
+  margin-bottom: 8px;
+  border-radius: 4px;
+}
+
+.list li.plus {
+  border-color: #2ecc71;
+}
+
+.list li.minus {
+  border-color: #e74c3c;
+}
+
+.list li button {
+  background: #e74c3c;
+  border: none;
+  color: white;
+  padding: 2px 7px;
+  border-radius: 3px;
+  cursor: pointer;
 }
