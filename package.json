@@ -1,0 +1,30 @@
+
+{
+  "name": "expensetracker",
+  "version": "1.0.0",
+  "description": "Expense Tracker with live currency conversion",
+  "type": "module",
+  "main": "src/main.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andyaketch/expenseTracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andyaketch/expenseTracker/issues"
+  },
+  "homepage": "https://github.com/andyaketch/expenseTracker#readme",
+  "devDependencies": {
+    "eslint": "^10.12.0",
+    "jest": "^30.5.2"
+  }
+}
