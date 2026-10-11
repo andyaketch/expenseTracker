@@ -3,7 +3,6 @@
 const CURRENCIES = ['USD', 'EUR', 'GBP', 'KES', 'UGX', 'TZS', 'NGN', 'ZAR', 'INR', 'JPY', 'CNY', 'CAD', 'AUD', 'AED', 'CHF'];
 const CATEGORIES = ['Food', 'Transport', 'Shopping', 'Bills', 'Other'];
 
-// ---- grab elements ----
 const $ = (id) => document.getElementById(id);
 const form = $('expense-form');
 const textInput = $('expense-text');
