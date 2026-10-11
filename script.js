@@ -58,11 +58,11 @@ function setStatus(type, message) {
 }
 
 // api section to get live exchange rates
-// 
+
 async function loadRates() {
   const requested = homeCurrency;
   rates = null;
-  setStatus('loading', 'Fetching live exchange rates...');
+  // setStatus('loading', 'Fetching live exchange rates...');
   render();
 
   try {
@@ -90,7 +90,7 @@ async function loadRates() {
   render();
 }
 
-// ---- draw the page ----
+// designing the page,ideally creating a loop function to fill in the values
 function renderTotal() {
   if (rates === null) {
     totalAmount.textContent = '-';
@@ -142,6 +142,16 @@ function buildItem(expense) {
   item.appendChild(remove);
   return item;
 }
+
+// its html equivalent
+// <li data-id="1728650000000">
+//   <div class="info">
+//     <strong>Lunch</strong>
+//     <small>$10.00</small>
+//   </div>
+//   <span class="converted">≈ KES 1,290.00</span>
+//   <button type="button" class="delete">x</button>
+// </li>
 
 function render() {
   renderTotal();
