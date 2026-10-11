@@ -45,6 +45,4 @@ The three tests cover the conversion and total functions in `utils.js`: normal c
 
 - Add ESLint and run it clean
 - Add categories and a category filter
-- Add more tests, including edge cases like zero amounts
-- Cache the rates so switching currencies back and forth doesn't refetch
-- Let the user retry a failed fetch with a button
+- Add more tests
