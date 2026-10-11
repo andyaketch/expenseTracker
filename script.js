@@ -12,9 +12,10 @@ const totalAmount = document.getElementById('total-amount');
 const totalNote = document.getElementById('total-note');
 const list = document.getElementById('list');
 const emptyMsg = document.getElementById('empty-msg');
-
+//this part finds an element in index.html by its id and keeps it in a variable.
 // ---- data ----
 let expenses = [];
+// will pass an array of values through it
 let homeCurrency = 'KES';
 let rates = null; // exchange rates filled in after the fetch
 
@@ -28,6 +29,10 @@ if (savedCurrency) {
   homeCurrency = savedCurrency;
 }
 
+// localStorage can only hold text, but expenses is an array of objects. So the code converts in both directions:
+
+// Saving: JSON.stringify(expenses) turns the array into text.
+// Loading: JSON.parse(savedExpenses) turns that text back into a real array.
 function save() {
   localStorage.setItem('expenses', JSON.stringify(expenses));
   localStorage.setItem('homeCurrency', homeCurrency);
@@ -52,11 +57,12 @@ function setStatus(type, message) {
   statusBox.textContent = message;
 }
 
-// ---- get live exchange rates ----
+// api section to get live exchange rates
+
 async function loadRates() {
   const requested = homeCurrency;
   rates = null;
-  setStatus('loading', 'Fetching live exchange rates...');
+  // setStatus('loading', 'Fetching live exchange rates...');
   render();
 
   try {
@@ -84,7 +90,7 @@ async function loadRates() {
   render();
 }
 
-// ---- draw the page ----
+// designing the page,ideally creating a loop function to fill in the values
 function renderTotal() {
   if (rates === null) {
     totalAmount.textContent = '-';
@@ -136,6 +142,16 @@ function buildItem(expense) {
   item.appendChild(remove);
   return item;
 }
+
+// its html equivalent
+// <li data-id="1728650000000">
+//   <div class="info">
+//     <strong>Lunch</strong>
+//     <small>$10.00</small>
+//   </div>
+//   <span class="converted">≈ KES 1,290.00</span>
+//   <button type="button" class="delete">x</button>
+// </li>
 
 function render() {
   renderTotal();

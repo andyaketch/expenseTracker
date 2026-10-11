@@ -116,7 +116,6 @@ input:focus-visible {
   gap: 8px;
   padding: 10px 12px;
   background: #fafafa;
-  border-left: 5px solid #1a73e8;
   margin-bottom: 8px;
   border-radius: 4px;
 }
