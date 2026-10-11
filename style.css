@@ -12,11 +12,10 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  background-image: linear-gradient(to right, #00b4db, #0083b0);
   padding: 40px 15px;
 }
 
-.dashboard {
+.viewScreen {
   display: flex;
   flex-wrap: wrap;
   gap: 30px;
@@ -45,15 +44,6 @@ body {
   margin-top: 15px;
   margin-bottom: 8px;
   font-size: 17px;
-}
-
-.note {
-  font-size: 13px;
-  color: #666;
-}
-
-.note:empty {
-  display: none;
 }
 
 select,
@@ -85,27 +75,6 @@ input:focus-visible {
   background: #f9f9f9;
   border-radius: 6px;
   font-size: 14px;
-}
-
-.status {
-  font-size: 13px;
-  padding: 8px 12px;
-  border-radius: 6px;
-}
-
-.status.loading {
-  background: #fff8e1;
-  color: #8a6d00;
-}
-
-.status.ready {
-  background: #e8f8ee;
-  color: #1e7a45;
-}
-
-.status.error {
-  background: #fdecea;
-  color: #b3261e;
 }
 
 #expense-form {
