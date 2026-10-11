@@ -1,157 +1,208 @@
-// ==========================================
-// 1. EXPENSE TRACKER
-// ==========================================
-const balance = document.getElementById('balance-amount');
-const money_plus = document.getElementById('income');
-const money_minus = document.getElementById('expense');
-const list = document.getElementById('list');
-const expenseForm = document.getElementById('expense-form');
-const text = document.getElementById('expense-text');
-const amount = document.getElementById('expense-amount');
+// Basic expense tracker with live currency conversion (single file, no modules)
 
-let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+const CURRENCIES = ['USD', 'EUR', 'GBP', 'KES', 'UGX', 'TZS', 'NGN', 'ZAR', 'INR', 'JPY', 'CNY', 'CAD', 'AUD', 'AED', 'CHF'];
+const CATEGORIES = ['Food', 'Transport', 'Shopping', 'Bills', 'Other'];
 
-function addTransaction(e) {
-  e.preventDefault();
+// ---- grab elements ----
+const $ = (id) => document.getElementById(id);
+const form = $('expense-form');
+const textInput = $('expense-text');
+const amountInput = $('expense-amount');
+const currencySelect = $('expense-currency');
+const categorySelect = $('expense-category');
+const homeSelect = $('home-currency');
+const filterSelect = $('filter-category');
+const statusBox = $('status');
+const retryBtn = $('retry-btn');
+const totalLabel = $('total-label');
+const totalAmount = $('total-amount');
+const totalNote = $('total-note');
+const list = $('list');
+const emptyMsg = $('empty-msg');
 
-  const transaction = {
-    id: Date.now(),
-    text: text.value,
-    amount: +amount.value,
-  };
+// ---- state ----
+let expenses = [];
+try {
+  expenses = JSON.parse(localStorage.getItem('expenses')) || [];
+} catch (e) {
+  expenses = [];
+}
+let homeCurrency = localStorage.getItem('homeCurrency') || 'USD';
+let filter = 'All';
+let rates = null; // rates with homeCurrency as the base
 
-  transactions.push(transaction);
-  addTransactionDOM(transaction);
-  updateValues();
-  updateLocalStorage();
-
-  text.value = '';
-  amount.value = '';
+function save() {
+  localStorage.setItem('expenses', JSON.stringify(expenses));
+  localStorage.setItem('homeCurrency', homeCurrency);
 }
 
-function addTransactionDOM(transaction) {
-  const sign = transaction.amount < 0 ? '-' : '+';
-  const item = document.createElement('li');
-
-  item.classList.add(transaction.amount < 0 ? 'minus' : 'plus');
-  item.innerHTML = `
-    ${transaction.text} <span>${sign}${Math.abs(transaction.amount)}</span>
-    <button onclick="removeTransaction(${transaction.id})">x</button>
-  `;
-
-  list.appendChild(item);
+// ---- helpers ----
+function fillSelect(select, values, selected) {
+  select.innerHTML = '';
+  values.forEach((v) => {
+    const option = document.createElement('option');
+    option.value = v;
+    option.textContent = v;
+    option.selected = v === selected;
+    select.appendChild(option);
+  });
 }
 
-function updateValues() {
-  const amounts = transactions.map((t) => t.amount);
-  const total = amounts
-    .reduce((acc, item) => acc + item, 0)
-    .toFixed(2);
-  const income = amounts
-    .filter((item) => item > 0)
-    .reduce((acc, item) => acc + item, 0)
-    .toFixed(2);
-  const expense = (
-    amounts
-      .filter((item) => item < 0)
-      .reduce((acc, item) => acc + item, 0) * -1
-  ).toFixed(2);
-
-  balance.innerText = `$${total}`;
-  money_plus.innerText = `$${income}`;
-  money_minus.innerText = `$${expense}`;
+// rates.EUR = 0.5 means 1 home unit = 0.5 EUR, so EUR -> home is amount / rate
+function toHome(amount, currency) {
+  if (!rates || !rates[currency]) return null;
+  return amount / rates[currency];
 }
 
-function removeTransaction(id) {
-  transactions = transactions.filter((t) => t.id !== id);
-  updateLocalStorage();
-  initExpenseTracker();
+function formatMoney(amount, currency) {
+  try {
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency }).format(amount);
+  } catch (e) {
+    return amount.toFixed(2) + ' ' + currency;
+  }
 }
 
-function updateLocalStorage() {
-  localStorage.setItem('transactions', JSON.stringify(transactions));
+// ---- fetch live rates ----
+async function loadRates() {
+  const requested = homeCurrency;
+  rates = null;
+  setStatus('loading');
+  render();
+
+  try {
+    const response = await fetch('https://open.er-api.com/v6/latest/' + requested);
+    if (!response.ok) throw new Error('server responded with ' + response.status);
+    const data = await response.json();
+    if (data.result !== 'success' || !data.rates) throw new Error('no rates returned');
+
+    if (requested !== homeCurrency) return; // user switched currency meanwhile
+    rates = data.rates;
+    setStatus('ready');
+  } catch (err) {
+    if (requested !== homeCurrency) return;
+    rates = null;
+    setStatus('error', err.message);
+  }
+  render();
 }
 
-function initExpenseTracker() {
+function setStatus(status, message) {
+  statusBox.className = 'status ' + status;
+  if (status === 'loading') statusBox.textContent = 'Fetching live exchange rates...';
+  if (status === 'ready') statusBox.textContent = 'Live exchange rates loaded.';
+  if (status === 'error') statusBox.textContent = 'Could not load exchange rates (' + message + ').';
+  retryBtn.hidden = status !== 'error';
+}
+
+// ---- draw the page ----
+function render() {
+  const visible = filter === 'All' ? expenses : expenses.filter((e) => e.category === filter);
+
+  // total
+  totalLabel.textContent = filter === 'All' ? 'Total spent' : 'Total spent: ' + filter;
+  if (!rates) {
+    totalAmount.textContent = '—';
+    totalNote.textContent = '';
+  } else {
+    let total = 0;
+    let skipped = 0;
+    visible.forEach((e) => {
+      const value = toHome(e.amount, e.currency);
+      if (value === null) skipped++;
+      else total += value;
+    });
+    totalAmount.textContent = formatMoney(total, homeCurrency);
+    totalNote.textContent = skipped ? skipped + ' expense(s) left out: no rate available.' : '';
+  }
+
+  // list
   list.innerHTML = '';
-  transactions.forEach(addTransactionDOM);
-  updateValues();
+  visible.forEach((e) => {
+    const li = document.createElement('li');
+    li.dataset.id = e.id;
+
+    const info = document.createElement('div');
+    info.className = 'info';
+    const title = document.createElement('strong');
+    title.textContent = e.description;
+    const small = document.createElement('small');
+    small.textContent = formatMoney(e.amount, e.currency);
+    info.append(title, small);
+
+    const converted = document.createElement('span');
+    converted.className = 'converted';
+    const value = toHome(e.amount, e.currency);
+    converted.textContent = value === null ? '—' : '≈ ' + formatMoney(value, homeCurrency);
+
+    const catSelect = document.createElement('select');
+    catSelect.className = 'category';
+    fillSelect(catSelect, CATEGORIES, e.category);
+
+    const del = document.createElement('button');
+    del.type = 'button';
+    del.className = 'delete';
+    del.textContent = 'x';
+
+    li.append(info, converted, catSelect, del);
+    list.appendChild(li);
+  });
+  emptyMsg.hidden = visible.length > 0;
 }
 
-expenseForm.addEventListener('submit', addTransaction);
-initExpenseTracker();
-
-// ==========================================
-// 2. CURRENCY CONVERTER
-// ==========================================
-const converterForm = document.getElementById('converter-form');
-const dropList = document.querySelectorAll('#converter-form select');
-const fromCurrency = document.getElementById('from-currency');
-const toCurrency = document.getElementById('to-currency');
-const converterAmount = document.getElementById('converter-amount');
-const exchangeRateTxt = document.querySelector('#converter-form .exchange-rate');
-const exchangeIcon = document.querySelector('#converter-form .icon');
-
-if (typeof country_list !== 'undefined') {
-  for (let i = 0; i < dropList.length; i++) {
-    for (let currency_code in country_list) {
-      let selected = i === 0 ? (currency_code === "USD" ? "selected" : "") : (currency_code === "AFN" ? "selected" : "");
-      let optionTag = `<option value="${currency_code}" ${selected}>${currency_code}</option>`;
-      dropList[i].insertAdjacentHTML("beforeend", optionTag);
-    }
-    dropList[i].addEventListener("change", (e) => {
-      loadFlag(e.target);
-    });
-  }
-}
-
-function loadFlag(element) {
-  for (let code in country_list) {
-    if (code === element.value) {
-      let imgTag = element.parentElement.querySelector("img");
-      imgTag.src = `https://flagcdn.com/48x36/${country_list[code].toLowerCase()}.png`;
-    }
-  }
-}
-
-function getExchangeRate() {
-  let amountVal = converterAmount.value;
-  if (amountVal === "" || amountVal === "0") {
-    converterAmount.value = "1";
-    amountVal = 1;
-  }
-
-  exchangeRateTxt.innerText = "Getting exchange rate...";
-  let url = `https://open.er-api.com/v6/latest/${fromCurrency.value}`;
-
-  fetch(url)
-    .then((response) => response.json())
-    .then((result) => {
-      let exchangeRate = result.rates[toCurrency.value];
-      let totalExRate = (amountVal * exchangeRate).toFixed(2);
-      exchangeRateTxt.innerText = `${amountVal} ${fromCurrency.value} = ${totalExRate} ${toCurrency.value}`;
-    })
-    .catch(() => {
-      exchangeRateTxt.innerText = "Something went wrong";
-    });
-}
-
-converterForm.addEventListener('submit', (e) => {
+// ---- events ----
+form.addEventListener('submit', (e) => {
   e.preventDefault();
-  getExchangeRate();
+  const description = textInput.value.trim();
+  const amount = Number(amountInput.value);
+  if (!description || !(amount > 0)) return;
+
+  expenses = [...expenses, {
+    id: Date.now(),
+    description,
+    amount,
+    currency: currencySelect.value,
+    category: categorySelect.value,
+  }];
+  save();
+  render();
+
+  const keep = currencySelect.value;
+  form.reset();
+  currencySelect.value = keep;
 });
 
-exchangeIcon.addEventListener('click', () => {
-  let tempCode = fromCurrency.value;
-  fromCurrency.value = toCurrency.value;
-  toCurrency.value = tempCode;
-  loadFlag(fromCurrency);
-  loadFlag(toCurrency);
-  getExchangeRate();
+list.addEventListener('click', (e) => {
+  if (!e.target.matches('button.delete')) return;
+  const id = Number(e.target.closest('li').dataset.id);
+  expenses = expenses.filter((x) => x.id !== id);
+  save();
+  render();
 });
 
-window.addEventListener("load", () => {
-  if (typeof country_list !== 'undefined') {
-    getExchangeRate();
-  }
+list.addEventListener('change', (e) => {
+  if (!e.target.matches('select.category')) return;
+  const id = Number(e.target.closest('li').dataset.id);
+  expenses = expenses.map((x) => (x.id === id ? { ...x, category: e.target.value } : x));
+  save();
+  render();
 });
+
+homeSelect.addEventListener('change', () => {
+  homeCurrency = homeSelect.value;
+  save();
+  loadRates();
+});
+
+filterSelect.addEventListener('change', () => {
+  filter = filterSelect.value;
+  render();
+});
+
+retryBtn.addEventListener('click', loadRates);
+
+// ---- start ----
+fillSelect(currencySelect, CURRENCIES, homeCurrency);
+fillSelect(homeSelect, CURRENCIES, homeCurrency);
+fillSelect(categorySelect, CATEGORIES, CATEGORIES[0]);
+fillSelect(filterSelect, ['All', ...CATEGORIES], 'All');
+loadRates();
