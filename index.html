@@ -1,41 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Expense Tracker</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>Expense Tracker v2</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-  <div class="container">
-    <h2>Expense Tracker</h2>
-    <div id="balance">
-      <h3>Your Balance</h3>
-      <h1 id="balance-amount">$0.00</h1>
-    </div>
-    <div class="income-expense">
-      <div>
-        <h4>Income</h4>
-        <p id="income" class="money plus">+$0.00</p>
-      </div>
-      <div>
-        <h4>Expense</h4>
-        <p id="expense" class="money minus">-$0.00</p>
-      </div>
-    </div>
-    <h3>Add Transaction</h3>
-    <form id="form">
-      <input type="text" id="text" placeholder="Enter description ..." required>
-      <input type="number" id="amount" placeholder="Enter amount ..." required>
-      <button type="submit">Add Transaction</button>
-    </form>
-    <h3>History</h3>
-    <ul id="list" class="list"></ul>
-  </div>
+  <main class="dashboard">
 
-  <script src="script.js"></script>
+    <section class="card">
+      <h2>Expense Tracker</h2>
+
+      <div id="balance">
+        <h3>Total spent</h3>
+        <h1 id="total-amount">—</h1>
+        <p id="total-note" class="note"></p>
+      </div>
+
+      <div class="home-currency">
+        <label for="home-currency">Show totals in</label>
+        <select id="home-currency"></select>
+      </div>
+
+      <div id="status" class="status loading" role="status" aria-live="polite">
+        Fetching live exchange rates...
+      </div>
+
+      <h3>Add Expense</h3>
+      <form id="expense-form">
+        <input type="text" id="expense-text" placeholder="Description, e.g. Lunch" required>
+        <input type="number" id="expense-amount" placeholder="Amount" min="0.01" step="0.01" required>
+        <select id="expense-currency" aria-label="Currency"></select>
+        <button type="submit">Add Expense</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Records</h2>
+      <ul id="list" class="list"></ul>
+      <p id="empty-msg" class="note" hidden>No records yet. Add one on the left.</p>
+    </section>
+
+  </main>
+
+  <script type="module" src="script.js"></script>
 </body>
-
 </html>
