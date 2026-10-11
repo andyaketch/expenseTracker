@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Expense Tracker with Live Currency Conversion</title>
+  <title>Expense TrackerS</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main class="dashboard">
+  <main class="viewScreen">
 
-    <section class="card" id="expense-logging">
+    <section class="card">
       <h2>Expense Tracker</h2>
 
       <div id="balance">
-        <h3 id="total-label">Total spent</h3>
+        <h3>Total spent</h3>
         <h1 id="total-amount">—</h1>
         <p id="total-note" class="note"></p>
       </div>
@@ -26,32 +26,24 @@
       <div id="status" class="status loading" role="status" aria-live="polite">
         Fetching live exchange rates...
       </div>
-      <button id="retry-btn" type="button" hidden>Try again</button>
 
       <h3>Add Expense</h3>
       <form id="expense-form">
-        <input type="text" id="expense-text" placeholder="Description, e.g. Lunch" required>
-        <input type="number" id="expense-amount" placeholder="Amount" min="0.01" step="0.01" required>
-        <div class="row">
-          <select id="expense-currency" aria-label="Currency"></select>
-          <select id="expense-category" aria-label="Category"></select>
-        </div>
+        <input type="text" id="expense-text" placeholder="Description e.g. Uber" required>
+        <input type="number" id="expense-amount" placeholder="Amount"  required>
+        <select id="expense-currency" aria-label="Currency"></select>
         <button type="submit">Add Expense</button>
       </form>
     </section>
 
-    <section class="card" id="history-section">
-      <h2>Expenses</h2>
-      <div class="filter">
-        <label for="filter-category">Category</label>
-        <select id="filter-category"></select>
-      </div>
+    <section class="card">
+      <h2>Records</h2>
       <ul id="list" class="list"></ul>
-      <p id="empty-msg" class="note" hidden>No expenses here yet. Add one on the left.</p>
+      <p id="empty-msg" class="note" hidden>No records yet. Add one on the left.</p>
     </section>
 
   </main>
 
-  <script type="module" src="src/main.js"></script>
+  <script type="module" src="script.js"></script>
 </body>
 </html>
