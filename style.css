@@ -93,6 +93,19 @@ input:focus-visible {
   cursor: pointer;
 }
 
+/* History card */
+#history-section {
+  min-height: 250px;
+}
+
+.filter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
 .list {
   list-style: none;
 }
