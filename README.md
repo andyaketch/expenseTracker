@@ -1,15 +1,27 @@
 # Expense Tracker v2
 
-A small web app for logging expenses in different currencies. You add a record in the currency you paid in, and the app shows each one converted into a home currency, plus a running total.
+People who travel, freelance for clients abroad, or shop from foreign stores often lose track of what they spend because every purchase is in a different currency. This app lets you log each expense in the currency you actually paid in. It converts everything into one home currency using live exchange rates, so you can see a single running total.
 
-## What it does
+**Live demo:** _add your GitHub Pages link here once deployed_
 
-- Add and delete expense records. They are saved in your browser, so they are still there after a refresh.
-- Pick a currency for each expense.
-- Pick a home currency for the total. Changing it fetches fresh rates.
-- Rates come from the free [open.er-api.com](https://open.er-api.com) API. If the fetch fails, the page says so and the total shows "-".
+## Features
 
-## Run it
+- Add an expense with a description, an amount and a currency
+- Delete an expense
+- See each record in its original currency and converted into your home currency
+- Running total in the home currency, updated on every add or delete
+- Change the home currency, which fetches fresh rates
+- Loading and error messages for the rates fetch, so the page never breaks silently
+- Records are saved in the browser and survive a refresh
+
+## Tech used
+
+- **REST API:** [open.er-api.com](https://open.er-api.com/v6/latest/USD), called with `fetch()` and `async/await`
+- **JavaScript modules:** `script.js` (state, fetch, rendering) imports the pure functions from `utils.js`
+- **Testing:** Node's built-in test runner (`node:test`), no packages needed
+- **Linting:** ESLint is not set up in this version
+
+## Run it locally
 
 Browsers block ES modules on `file://`, so serve the folder instead of opening `index.html` directly:
 
@@ -19,19 +31,20 @@ python3 -m http.server
 
 Then open http://localhost:8000.
 
-## Test it
+## Run the tests
 
-You need Node 18 or newer. There is nothing to install.
+You need Node 18 or newer.
 
 ```
 npm test
 ```
 
-The three tests cover the conversion and total functions in `utils.js`.
+The three tests cover the conversion and total functions in `utils.js`: normal conversion, a missing rate, and a total that skips records it can't convert.
 
-## Files
+## What I'd improve with more time
 
-- `index.html` and `style.css`: the page and its styling
-- `script.js`: state, the rates fetch, and rendering
-- `utils.js`: the pure conversion and formatting functions
-- `utils.test.js`: the tests
+- Add ESLint and run it clean
+- Add categories and a category filter
+- Add more tests, including edge cases like zero amounts
+- Cache the rates so switching currencies back and forth doesn't refetch
+- Let the user retry a failed fetch with a button
