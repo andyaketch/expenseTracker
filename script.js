@@ -16,7 +16,7 @@ const emptyMsg = document.getElementById('empty-msg');
 // ---- data ----
 let expenses = [];
 let homeCurrency = 'KES';
-let rates = null; // exchange rates, filled in after the fetch
+let rates = null; // exchange rates filled in after the fetch
 
 // load saved data from the browser
 const savedExpenses = localStorage.getItem('expenses');
