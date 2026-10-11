@@ -1,4 +1,4 @@
-# Expense Tracker v2
+# Expense Tracker 
 
 People who travel, freelance for clients abroad, or shop from foreign stores often lose track of what they spend because every purchase is in a different currency. This app lets you log each expense in the currency you actually paid in. It converts everything into one home currency using live exchange rates, so you can see a single running total.
 
@@ -16,24 +16,20 @@ People who travel, freelance for clients abroad, or shop from foreign stores oft
 
 ## Tech used
 
-- **REST API:** [open.er-api.com](https://open.er-api.com/v6/latest/USD), called with `fetch()` and `async/await`
+- **REST API:** [open.er-api.com](https://open.er-api.com/v6/latest/USD)
 - **JavaScript modules:** `script.js` (state, fetch, rendering) imports the pure functions from `utils.js`
 - **Testing:** Node's built-in test runner (`node:test`), no packages needed
 - **Linting:** ESLint is not set up in this version
 
 ## Run it locally
 
-Browsers block ES modules on `file://`, so serve the folder instead of opening `index.html` directly:
+Use the folder instead of opening `index.html` directly:
 
-```
-python3 -m http.server
 ```
 
 Then open http://localhost:8000.
 
 ## Run the tests
-
-You need Node 18 or newer.
 
 ```
 npm test
