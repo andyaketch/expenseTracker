@@ -1,3 +1,4 @@
+// The first line of script.js is import { CURRENCIES, calcTotal, formatMoney, toHome } from './utils.js';. It pulls in exactly those four things, and ./utils.js means “the file called utils.js in the same folder”
 import { CURRENCIES, calcTotal, formatMoney, toHome } from './src/utils.js';
 
 // ---- page elements ----

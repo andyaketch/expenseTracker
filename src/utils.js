@@ -1,3 +1,4 @@
+// utils.js exports. The word export in front of CURRENCIES, toHome, calcTotal and formatMoney makes them available to other files. Anything without export stays private to that file.
 export const CURRENCIES = [
   'USD', 'EUR', 'GBP', 'KES', 'UGX', 'TZS', 'NGN', 'ZAR', 'INR', 'JPY', 'CAD', 'AUD',
 ];
@@ -30,6 +31,7 @@ export function formatMoney(amount, currency) {
   try {
     return new Intl.NumberFormat('en-US', { style: 'currency', currency: currency }).format(amount);
   } catch (error) {
+    // concatenation...addss the amount,to (toFIxed,to2 dp ) and the currency
     return amount.toFixed(2) + ' ' + currency;
   }
 }
