@@ -1,4 +1,4 @@
-import { CURRENCIES, calcTotal, formatMoney, toHome } from './utils.js';
+import { CURRENCIES, calcTotal, formatMoney, toHome } from './src/utils.js';
 
 // ---- page elements ----
 const form = document.getElementById('expense-form');
