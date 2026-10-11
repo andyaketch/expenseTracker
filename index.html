@@ -3,78 +3,55 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Expense Tracker & Currency Exchange</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <title>Expense Tracker with Live Currency Conversion</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <main class="dashboard">
-    
+
     <section class="card" id="expense-logging">
       <h2>Expense Tracker</h2>
-      
+
       <div id="balance">
-        <h3>Your Balance</h3>
-        <h1 id="balance-amount">$0.00</h1>
+        <h3 id="total-label">Total spent</h3>
+        <h1 id="total-amount">—</h1>
+        <p id="total-note" class="note"></p>
       </div>
 
-      <div class="income-expense">
-        <div>
-          <h4>Income</h4>
-          <p id="income" class="money plus">+$0.00</p>
-        </div>
-        <div>
-          <h4>Expense</h4>
-          <p id="expense" class="money minus">-$0.00</p>
-        </div>
+      <div class="home-currency">
+        <label for="home-currency">Show totals in</label>
+        <select id="home-currency"></select>
       </div>
 
-      <h3>Add Transaction</h3>
+      <div id="status" class="status loading" role="status" aria-live="polite">
+        Fetching live exchange rates...
+      </div>
+      <button id="retry-btn" type="button" hidden>Try again</button>
+
+      <h3>Add Expense</h3>
       <form id="expense-form">
-        <input type="text" id="expense-text" placeholder="Enter description ..." required>
-        <input type="number" id="expense-amount" placeholder="Enter amount ..." required>
-        <button type="submit">Add Transaction</button>
+        <input type="text" id="expense-text" placeholder="Description, e.g. Lunch" required>
+        <input type="number" id="expense-amount" placeholder="Amount" min="0.01" step="0.01" required>
+        <div class="row">
+          <select id="expense-currency" aria-label="Currency"></select>
+          <select id="expense-category" aria-label="Category"></select>
+        </div>
+        <button type="submit">Add Expense</button>
       </form>
-
-      <!-- Embedded Currency Exchange Section -->
-      <div class="currency-converter-wrapper">
-        <h3>Currency Exchange</h3>
-        <form id="converter-form" action="#">
-          <div class="amount">
-            <p>Enter Amount</p>
-            <input type="number" id="converter-amount" value="1">
-          </div>
-          <div class="drop-list">
-            <div class="from">
-              <p>From</p>
-              <div class="select-box">
-                <img src="https://flagcdn.com/48x36/us.png" alt="flag">
-                <select id="from-currency"></select>
-              </div>
-            </div>
-            <div class="icon"><i class="fas fa-exchange-alt"></i></div>
-            <div class="to">
-              <p>To</p>
-              <div class="select-box">
-                <img src="https://flagcdn.com/48x36/af.png" alt="flag">
-                <select id="to-currency"></select>
-              </div>
-            </div>
-          </div>
-          <div class="exchange-rate">Getting exchange rate...</div>
-          <button type="submit">Get Exchange Rate</button>
-        </form>
-      </div>
     </section>
 
-    <!-- Right Card: Dedicated History Panel -->
     <section class="card" id="history-section">
-      <h2>Transaction History</h2>
+      <h2>Expenses</h2>
+      <div class="filter">
+        <label for="filter-category">Category</label>
+        <select id="filter-category"></select>
+      </div>
       <ul id="list" class="list"></ul>
+      <p id="empty-msg" class="note" hidden>No expenses here yet. Add one on the left.</p>
     </section>
+
   </main>
 
-  <script src="country-list.js"></script>
-  <script src="script.js"></script>
+  <script type="module" src="src/main.js"></script>
 </body>
 </html>
